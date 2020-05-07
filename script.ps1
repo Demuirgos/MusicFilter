@@ -73,24 +73,39 @@ foreach ($strfilename in $objfolder.items())
         }
         if ($artist -and $album)
         {
+            $album=$album.Replace(':',' ')
+            $album=$album.Replace('?',' ')
+            $album=$album.Replace('"',' ')
+            $album=$album.Replace('*',' ')
+            $album=$album.Replace('/',' ')
+            $album=$album.Replace('\\',' ')
+            $artist=$artist.Replace(':',' ')
+            $artist=$artist.Replace('?',' ')
+            $artist=$artist.Replace('"',' ')
+            $artist=$artist.Replace('*',' ')
+            $artist=$artist.Replace('/',' ')
+            $artist=$artist.Replace('\\',' ')
+            echo "$artist"
+            echo "$album"
             $pathfolder = Split-Path -Path $strfilename.Path()
+            $fileName = Split-Path -Path $strfilename.Path() -leaf
             $directoryArtistPath = $pathfolder + "\" + $artist
-            $directoryAlbumPath = $pathfolder + "\" + $artist + "/" + $album 
+            $directoryAlbumPath = $pathfolder + "\" + $artist + "\" + $album
             if(!(test-path($directoryArtistPath))){
-                echo "hereART"
                 new-Item $directoryArtistPath -ItemType directory
             }
             if(test-path($directoryArtistPath)){
                 if(!(test-path($directoryAlbumPath))){
-                    echo "hereALB"
                     new-Item $directoryAlbumPath -ItemType directory
                 }
             }
-            $path = $pathfolder + "\" + $artist + "\" + $album + "\" + $strfilename.Name()
+            $path = $pathfolder + "\" + $artist + "\" + $album + "\" + $fileName
+            echo "$path"
             if (!(test-path($path)))
             {
                 move-item -Path $strfilename.path() -Destination $path
             }
+            
         }
         clear-variable artist
         clear-Variable album
